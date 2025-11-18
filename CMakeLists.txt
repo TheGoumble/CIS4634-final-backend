@@ -10,6 +10,12 @@ project(ProjectBackend VERSION 1.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Find the installed Libsodium package
+find_package(Sodium REQUIRED)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 # Add dependencies
 #find_package( CONFIG REQUIRED)
 
@@ -41,7 +47,8 @@ target_compile_definitions(ProjectBackend PRIVATE
 
 # Automatically links to these libs
 target_link_libraries(ProjectBackend PRIVATE
-
+    Sodium::sodium
+    
 )
 
 # Add directories with any random loose .dlls or .libs here
