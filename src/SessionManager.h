@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "CryptoUtils.h" // Includes KeyPair struct and crypto functions
+#include "crypto_utils.h" // Includes KeyPair struct and crypto functions
 
 // --- Structures for State Management ---
 struct PeerSessionData {

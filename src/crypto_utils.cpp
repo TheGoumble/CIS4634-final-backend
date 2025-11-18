@@ -1,4 +1,4 @@
-#include "CryptoUtils.h"
+#include "crypto_utils.h"
 #include <sodium.h>
 #include <stdexcept>
 #include <sstream>
