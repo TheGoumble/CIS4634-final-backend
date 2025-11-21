@@ -12,12 +12,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add dependencies
 #find_package( CONFIG REQUIRED)
+find_package(websocketpp CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 # No C++20 modules
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF) 
 
 # ProjectBackend executable
 add_executable(ProjectBackend)
+add_executable(MyWebSocketApp main.cpp)
 
 # ProjectBackend sources and headers
 file(GLOB_RECURSE ProjectBackend_SOURCES CONFIGURE_DEPENDS 
@@ -41,7 +44,9 @@ target_compile_definitions(ProjectBackend PRIVATE
 
 # Automatically links to these libs
 target_link_libraries(ProjectBackend PRIVATE
-
+    MyWebSocketApp websocketpp::websocketpp
+    OpenSSL::SSL
+    OpenSSL::Crypto
 )
 
 # Add directories with any random loose .dlls or .libs here

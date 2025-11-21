@@ -2,6 +2,7 @@
   "name": "project-backend",
   "version-string": "0.1.0",
   "dependencies": [
-    "boost-beast",
+    "websocketpp",
+    "openssl"
   ]
 }
