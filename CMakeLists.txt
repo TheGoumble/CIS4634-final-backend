@@ -12,15 +12,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add dependencies
 #find_package( CONFIG REQUIRED)
-find_package(websocketpp CONFIG REQUIRED)
+# find_package(websocketpp CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
+
+# === websocket++ ===
+FetchContent_Declare(websocketpp
+GIT_REPOSITORY https://github.com/zaphoyd/websocketpp.git
+  GIT_TAG 0.8.2)
+FetchContent_GetProperties(websocketpp)
+if(NOT websocketpp_POPULATED)
+  FetchContent_Populate(websocketpp)
+  add_subdirectory(${websocketpp_SOURCE_DIR} ${websocketpp_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+# add interface library with all websocketpp dependencies
+add_library(Websockets INTERFACE)
+target_include_directories(Websockets INTERFACE ${websocketpp_SOURCE_DIR})
+target_link_libraries(Websockets INTERFACE Boost::system Boost::thread Boost::regex)
 
 # No C++20 modules
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF) 
 
 # ProjectBackend executable
 add_executable(ProjectBackend)
-add_executable(MyWebSocketApp main.cpp)
 
 # ProjectBackend sources and headers
 file(GLOB_RECURSE ProjectBackend_SOURCES CONFIGURE_DEPENDS 
@@ -40,11 +53,12 @@ target_include_directories(ProjectBackend PRIVATE
 # Preprocessor defines
 target_compile_definitions(ProjectBackend PRIVATE
     MY_TEST_DEFINE
+    Websockets INTERFACE ${CMAKE_SOURCE_DIR}/websocketpp/websocketpp
 )
 
 # Automatically links to these libs
 target_link_libraries(ProjectBackend PRIVATE
-    MyWebSocketApp websocketpp::websocketpp
+    Websockets INTERFACE Boost::system Boost::thread Boost::regex
     OpenSSL::SSL
     OpenSSL::Crypto
 )
